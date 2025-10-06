@@ -1,16 +1,2 @@
 node_modules/
-dist/
-build/
-
-.env
-.env.local
 ormconfig.json
-ormconfig.js
-ormconfig.ts
-
-.vscode/
-.idea/
-*.code-workspace
-
-*.tsbuildinfo
-
