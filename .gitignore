@@ -1,6 +1,15 @@
+.idea/
+.vscode/
 node_modules/
-dist/
 build/
+temp/
+.env
+coverage
+ormconfig.json
+dist
+
+uploads/*
+!uploads/.gitkeep
 
 .env
 .env.local
@@ -8,8 +17,6 @@ ormconfig.json
 ormconfig.js
 ormconfig.ts
 
-.vscode/
-.idea/
 *.code-workspace
 
 *.tsbuildinfo
