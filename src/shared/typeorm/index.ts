@@ -1,3 +1,3 @@
-import { createConnection } from "typeorm"
+import { AppDataSource } from "./data-source"
 
-createConnection();
+AppDataSource.initialize()
