@@ -8,6 +8,8 @@ coverage
 ormconfig.json
 dist
 
+data-source.ts
+
 uploads/*
 !uploads/.gitkeep
 
