@@ -1,10 +1,8 @@
+import secretarysRouter from "@modules/secretarys/routes/secretarys.routes";
 import { Router } from "express";
 
 const routes = Router();
 
-routes.get('/', (request, response) =>{
-    response.json({message: 'Hello Dev!'});
-    return;
-})
+routes.use('/secretarys', secretarysRouter);
 
 export default routes;
