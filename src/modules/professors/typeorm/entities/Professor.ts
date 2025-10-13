@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import Intern from "@modules/interns/typeorm/entities/Intern";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('professors')
 export default class Professor {
@@ -12,6 +13,10 @@ export default class Professor {
     departament: string;
     @Column()
     password: string;
+
+    @OneToMany(() => Intern, (intern) => intern.professor)
+    interns: Intern[];
+
     @CreateDateColumn()
     created_at: Date;
     @UpdateDateColumn()
