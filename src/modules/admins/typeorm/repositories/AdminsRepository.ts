@@ -13,7 +13,7 @@ export const AdminsRepository = AppDataSource.getRepository(Admin).extend({
     },
 
     async findByEmail(email: string): Promise<Admin | null> {
-        const user = this.findOne({ where: { email } });
-        return user;
+        const admin = this.findOne({ where: { email } });
+        return admin;
     }
 })

@@ -13,7 +13,7 @@ export const SecretarysRepository = AppDataSource.getRepository(Secretary).exten
     },
 
     async findByEmail(email : string) : Promise<Secretary | null>{
-        const user = this.findOne({where:{email}});
-        return user;
+        const secretary = this.findOne({where:{email}});
+        return secretary;
     }
 })
