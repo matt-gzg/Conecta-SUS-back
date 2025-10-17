@@ -5,7 +5,7 @@ import isAuthenticatedSecretary from "@shared/http/middlewares/isAuthenticatedSe
 
 const professorsRouter = Router();
 const professorsController = new ProfessorsController();
-proffessorsRouter.use(isAuthenticatedSecretary);
+professorsRouter.use(isAuthenticatedSecretary);
 
 professorsRouter.get('/', async (req, res, next) => {
     try {

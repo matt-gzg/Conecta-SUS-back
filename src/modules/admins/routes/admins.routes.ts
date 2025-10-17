@@ -1,11 +1,12 @@
 import { Router } from "express";
 import AdminsController from "../controllers/AdminsController";
 import { celebrate, Joi, Segments } from "celebrate";
+import isAuthenticatedAdmin from "@shared/http/middlewares/isAuthenticatedAdmin";
 
 const adminsRouter = Router();
 const adminsController = new AdminsController();
 
-adminsRouter.get('/', async (req, res, next) => {
+adminsRouter.get('/', isAuthenticatedAdmin, async (req, res, next) => {
     try {
         await adminsController.index(req, res, next);
     }

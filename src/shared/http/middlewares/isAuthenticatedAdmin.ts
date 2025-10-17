@@ -32,7 +32,14 @@ export default async function isAuthenticatedAdmin(request: Request, response: R
 
         return next();
     }
-    catch{
-        throw new AppError('Invalid JWT token', 401);
+    catch(err){
+        if(err instanceof AppError){
+            if(err.statusCode == 403){
+                throw err;
+            }
+        }
+        else {
+            throw new AppError('Invalid JWT token', 401);
+        }
     }
 }
