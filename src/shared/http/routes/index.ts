@@ -1,5 +1,5 @@
 import adminsRouter from "@modules/admins/routes/admins.routes";
-import sessionsAdminRouter from "@modules/admins/routes/sessionsAdmin.routes";
+import sessionsRouter from "@modules/sessions/routes/sessions.routes";
 import internsRouter from "@modules/interns/routes/interns.routes";
 import professorsRouter from "@modules/professors/routes/professors.routes";
 import patientsRouter from "@modules/patients/routes/patients.routes";
@@ -10,7 +10,7 @@ const routes = Router();
 
 routes.use('/secretarys', secretarysRouter);
 routes.use('/admins', adminsRouter);
-routes.use('/sessions/admins', sessionsAdminRouter);
+routes.use('/sessions', sessionsRouter);
 routes.use('/professors', professorsRouter);
 routes.use('/interns', internsRouter);
 routes.use('/patients', patientsRouter);
