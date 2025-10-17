@@ -25,7 +25,7 @@ export default class CreateSessionService {
         if (!passwordConfirmed) {
             throw new AppError('Incorrect email/password combination.');
         }
-        const token = sign({}, auth.jwt.secret, {
+        const token = sign({ role: admin.role }, auth.jwt.secret, {
             subject: admin.id,
             expiresIn: '6h'
         })

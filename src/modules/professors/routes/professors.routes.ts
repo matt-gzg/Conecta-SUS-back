@@ -1,9 +1,11 @@
 import { Router } from "express";
 import { celebrate, Joi, Segments } from "celebrate";
 import ProfessorsController from "../controllers/ProfessorsController";
+import isAuthenticatedSecretary from "@shared/http/middlewares/isAuthenticatedSecretary";
 
 const professorsRouter = Router();
 const professorsController = new ProfessorsController();
+proffessorsRouter.use(isAuthenticatedSecretary);
 
 professorsRouter.get('/', async (req, res, next) => {
     try {
