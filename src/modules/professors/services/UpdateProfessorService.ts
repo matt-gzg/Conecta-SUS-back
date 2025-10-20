@@ -2,6 +2,7 @@ import { compare, hash } from "bcryptjs";
 import AppError from "@shared/errors/AppError";
 import Professor from "../typeorm/entities/Professor";
 import { ProfessorsRepository } from "../typeorm/repositories/ProfessorsRepository";
+import { normalizeDepartament } from "@shared/http/middlewares/departamentNormalizer";
 
 interface IRequest {
     id: string;
@@ -32,9 +33,9 @@ export default class UpdateProfessorService {
             }
             professor.password = await hash(password, 8);
         }
+        professor.departament = normalizeDepartament(departament);
         professor.name = name;
         professor.email = email;
-        professor.departament = departament;
         await ProfessorsRepository.save(professor);
         return professor;
     }

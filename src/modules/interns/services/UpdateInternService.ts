@@ -3,6 +3,7 @@ import AppError from "@shared/errors/AppError";
 import Intern from "../typeorm/entities/Intern";
 import { InternsRepository } from "../typeorm/repositories/InternsRepository";
 import { ProfessorsRepository } from "@modules/professors/typeorm/repositories/ProfessorsRepository";
+import { normalizeDepartament } from "@shared/http/middlewares/departamentNormalizer";
 
 interface IRequest {
     id: string;
@@ -41,10 +42,9 @@ export default class UpdateInternService {
             }
             intern.professor = professor;
         }
-
         intern.name = name;
         intern.email = email;
-        intern.departament = departament;
+        intern.departament = normalizeDepartament(departament);
         await InternsRepository.save(intern);
         return intern;
     }

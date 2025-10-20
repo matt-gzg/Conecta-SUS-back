@@ -2,6 +2,7 @@ import { hash } from "bcryptjs";
 import AppError from "@shared/errors/AppError";
 import Professor from "../typeorm/entities/Professor";
 import { ProfessorsRepository } from "../typeorm/repositories/ProfessorsRepository";
+import { normalizeDepartament } from "@shared/http/middlewares/departamentNormalizer";
 
 interface IRequest {
     name: string;
@@ -16,8 +17,9 @@ export default class CreateProfessorService {
         if(emailExists){
             throw new AppError('Email address already used.');
         }
+        const normalizedDepartament = normalizeDepartament(departament);
         const hashedPassword = await hash(password, 8);
-        const professor = ProfessorsRepository.create({name, email, password: hashedPassword, departament});
+        const professor = ProfessorsRepository.create({name, email, password: hashedPassword, departament: normalizedDepartament});
         await ProfessorsRepository.save(professor);
         return professor;
     }
