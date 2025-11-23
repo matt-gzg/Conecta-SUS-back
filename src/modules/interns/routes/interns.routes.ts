@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { celebrate, Joi, Segments } from "celebrate";
 import InternsController from "../controllers/InternsController";
+import { Departaments } from "@shared/http/middlewares/departamentEnum";
 
 const internsRouter = Router();
 const internsController = new InternsController();
@@ -31,7 +32,7 @@ internsRouter.post('/',
         [Segments.BODY]: {
             name: Joi.string().required(),
             email: Joi.string().email().required(),
-            departament: Joi.string().required(),
+            departament: Joi.string().valid(...Object.values(Departaments)).required(),
             password: Joi.string().min(6).required(),
             professor_id: Joi.string().uuid().required()
         }
@@ -51,7 +52,7 @@ internsRouter.put('/:id',
         [Segments.BODY]: {
             name: Joi.string().required(),
             email: Joi.string().email().required(),
-            departament: Joi.string().required(),
+            departament: Joi.string().valid(...Object.values(Departaments)).required(),
             old_password: Joi.string().min(6),
             password: Joi.string().min(6).optional(),
             password_confirmation: Joi.string().valid(Joi.ref("password")).when("password", { is: Joi.exist(), then: Joi.required() }),

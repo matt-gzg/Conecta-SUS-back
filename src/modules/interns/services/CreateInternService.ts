@@ -3,12 +3,12 @@ import AppError from "@shared/errors/AppError";
 import Intern from "../typeorm/entities/Intern";
 import { InternsRepository } from "../typeorm/repositories/InternsRepository";
 import { ProfessorsRepository } from "@modules/professors/typeorm/repositories/ProfessorsRepository";
-import { normalizeDepartament } from "@shared/http/middlewares/departamentNormalizer";
+import { Departaments } from "@shared/http/middlewares/departamentEnum";
 
 interface IRequest {
     name: string;
     email: string;
-    departament: string;
+    departament: Departaments;
     password: string;
     professor_id: string;
 }
@@ -25,8 +25,7 @@ export default class CreateInternService {
             throw new AppError('Email address already used.');
         }
         const hashedPassword = await hash(password, 8);
-        const normalizedDepartament = normalizeDepartament(departament);
-        const intern = InternsRepository.create({name, email, password: hashedPassword, departament: normalizedDepartament});
+        const intern = InternsRepository.create({name, email, password: hashedPassword, departament: departament});
         await InternsRepository.save(intern);
         return intern;
     }

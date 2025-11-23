@@ -2,13 +2,13 @@ import { compare, hash } from "bcryptjs";
 import AppError from "@shared/errors/AppError";
 import Professor from "../typeorm/entities/Professor";
 import { ProfessorsRepository } from "../typeorm/repositories/ProfessorsRepository";
-import { normalizeDepartament } from "@shared/http/middlewares/departamentNormalizer";
+import { Departaments } from "@shared/http/middlewares/departamentEnum";
 
 interface IRequest {
     id: string;
     name: string;
     email: string;
-    departament: string;
+    departament: Departaments;
     password?: string;
     old_password?: string;
 }
@@ -33,7 +33,7 @@ export default class UpdateProfessorService {
             }
             professor.password = await hash(password, 8);
         }
-        professor.departament = normalizeDepartament(departament);
+        professor.departament = departament;
         professor.name = name;
         professor.email = email;
         await ProfessorsRepository.save(professor);

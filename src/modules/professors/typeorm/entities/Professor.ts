@@ -1,4 +1,5 @@
 import Intern from "@modules/interns/typeorm/entities/Intern";
+import { Departaments } from "@shared/http/middlewares/departamentEnum";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('professors')
@@ -10,7 +11,7 @@ export default class Professor {
     @Column()
     email: string;
     @Column()
-    departament: string;
+    departament: Departaments;
     @Column()
     password: string;
 

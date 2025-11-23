@@ -3,13 +3,13 @@ import AppError from "@shared/errors/AppError";
 import Intern from "../typeorm/entities/Intern";
 import { InternsRepository } from "../typeorm/repositories/InternsRepository";
 import { ProfessorsRepository } from "@modules/professors/typeorm/repositories/ProfessorsRepository";
-import { normalizeDepartament } from "@shared/http/middlewares/departamentNormalizer";
+import { Departaments } from "@shared/http/middlewares/departamentEnum";
 
 interface IRequest {
     id: string;
     name: string;
     email: string;
-    departament: string;
+    departament: Departaments;
     password?: string;
     old_password?: string;
     professor_id?: string;
@@ -44,7 +44,7 @@ export default class UpdateInternService {
         }
         intern.name = name;
         intern.email = email;
-        intern.departament = normalizeDepartament(departament);
+        intern.departament = departament;
         await InternsRepository.save(intern);
         return intern;
     }
