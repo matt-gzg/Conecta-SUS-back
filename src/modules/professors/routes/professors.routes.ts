@@ -53,7 +53,7 @@ professorsRouter.put('/:id',
             name: Joi.string().required(),
             email: Joi.string().email().required(),
             departament: Joi.string().required(),
-            old_password: Joi.string().min(6),
+            old_password: Joi.string().min(6).optional(),
             password: Joi.string().min(6).optional(),
             password_confirmation: Joi.string().valid(Joi.ref("password")).when("password", { is: Joi.exist(), then: Joi.required() }),
         }
