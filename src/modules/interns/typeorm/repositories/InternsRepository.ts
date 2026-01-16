@@ -8,7 +8,7 @@ export const InternsRepository = AppDataSource.getRepository(Intern).extend({
     },
 
     async findById(id: string): Promise<Intern | null> {
-        const intern = this.findOne({ where: { id } });
+        const intern = this.findOne({ where: { id } , relations: { professor: true } });
         return intern;
     },
 

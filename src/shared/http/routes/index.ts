@@ -4,6 +4,7 @@ import internsRouter from "@modules/interns/routes/interns.routes";
 import professorsRouter from "@modules/professors/routes/professors.routes";
 import patientsRouter from "@modules/patients/routes/patients.routes";
 import secretarysRouter from "@modules/secretarys/routes/secretarys.routes";
+import appointmentsRouter from "@modules/appointments/routes/appointments.routes";
 import { Router } from "express";
 
 const routes = Router();
@@ -14,5 +15,6 @@ routes.use('/sessions', sessionsRouter);
 routes.use('/professors', professorsRouter);
 routes.use('/interns', internsRouter);
 routes.use('/patients', patientsRouter);
+routes.use('/appointments', appointmentsRouter);
 
 export default routes;

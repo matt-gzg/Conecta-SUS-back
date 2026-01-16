@@ -24,7 +24,7 @@ export default class CreateInternService {
             throw new AppError('Email address already used.');
         }
         const hashedPassword = await hash(password, 8);
-        const intern = InternsRepository.create({name, email, password: hashedPassword, departament});
+        const intern = InternsRepository.create({name, email, password: hashedPassword, departament, professor});
         await InternsRepository.save(intern);
         return intern;
     }
