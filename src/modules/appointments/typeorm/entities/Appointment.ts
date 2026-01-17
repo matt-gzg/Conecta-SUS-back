@@ -3,7 +3,7 @@ import Patient from "@modules/patients/typeorm/entities/Patient";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('appointments')
-export default class Appointments {
+export default class Appointment {
     @PrimaryGeneratedColumn('uuid')
     id: string;
     @Column()
