@@ -7,7 +7,7 @@ interface IRequest {
 }
 
 export default class ListAppointmentByInternService {
-    public async execute({ id }: IRequest): Promise<null | Appointment[]> {
+    public async execute({ id }: IRequest): Promise<Appointment[]> {
         const appointments = await AppointmentsRepository.findByIntern(id);
         return appointments;
     }
