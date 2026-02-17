@@ -28,6 +28,18 @@ internsRouter.get('/:id', celebrate({
         }
     });
 
+internsRouter.get('/professor/:professor_id', celebrate({
+    [Segments.PARAMS]: { professor_id: Joi.string().uuid().required() }
+}),
+    async (req, res, next) => {
+        try {
+            await internsController.listByProfessor(req, res, next);
+        }
+        catch (err) {
+            next(err);
+        }
+    });
+
 internsRouter.post('/',
     celebrate({
         [Segments.BODY]: {

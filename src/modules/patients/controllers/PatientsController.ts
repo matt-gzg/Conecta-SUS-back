@@ -4,6 +4,9 @@ import ShowPatientService from "../services/ShowPatientService";
 import CreatePatientService from "../services/CreatePatientService";
 import UpdatePatientService from "../services/UpdatePatientService";
 import DeletePatientService from "../services/DeletePatientService";
+import ShowPatientByCPFService from "../services/ShowPatientByCpfService";
+import ShowPatientBySUSNumberService from "../services/ShowPatientBySUSNumberService";
+import ListPatientsByNameService from "../services/ListPatientsByNameService";
 
 export default class PatientsController {
 
@@ -23,6 +26,42 @@ export default class PatientsController {
             const { id } = request.params;
             const showPatients = new ShowPatientService();
             const patient = await showPatients.execute({ id });
+            return response.json(patient);
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+
+    public async showByCPF(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
+        try {
+            const { cpf } = request.params;
+            const showPatients = new ShowPatientByCPFService();
+            const patient = await showPatients.execute({ cpf });
+            return response.json(patient);
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+
+    public async showBySUSNumber(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
+        try {
+            const { susnumber } = request.params;
+            const showPatients = new ShowPatientBySUSNumberService();
+            const patient = await showPatients.execute({ susnumber });
+            return response.json(patient);
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+
+    public async listByName(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
+        try {
+            const { name } = request.params;
+            const listPatients = new ListPatientsByNameService();
+            const patient = await listPatients.execute({ name });
             return response.json(patient);
         }
         catch (err) {

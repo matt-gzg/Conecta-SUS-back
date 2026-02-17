@@ -28,6 +28,42 @@ patientsRouter.get('/:id', celebrate({
         }
     });
 
+patientsRouter.get('/cpf/:cpf', celebrate({
+    [Segments.PARAMS]: { cpf: Joi.string().required() }
+}),
+    async (req, res, next) => {
+        try {
+            await patientsController.show(req, res, next);
+        }
+        catch (err) {
+            next(err);
+        }
+    });
+
+patientsRouter.get('/susnumber/:susnumber', celebrate({
+    [Segments.PARAMS]: { susnumber: Joi.string().required() }
+}),
+    async (req, res, next) => {
+        try {
+            await patientsController.show(req, res, next);
+        }
+        catch (err) {
+            next(err);
+        }
+    });
+
+patientsRouter.get('/name/:name', celebrate({
+    [Segments.PARAMS]: { name: Joi.string().required() }
+}),
+    async (req, res, next) => {
+        try {
+            await patientsController.show(req, res, next);
+        }
+        catch (err) {
+            next(err);
+        }
+    });
+
 patientsRouter.post('/',
     celebrate({
         [Segments.BODY]: {
