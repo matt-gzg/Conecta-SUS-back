@@ -4,6 +4,7 @@ import ShowProfessorService from "../services/ShowProfessorService";
 import CreateProfessorService from "../services/CreateProfessorService";
 import UpdateProfessorService from "../services/UpdateProfessorService";
 import DeleteProfessorService from "../services/DeleteProfessorService";
+import ListProfessorByInternService from "../services/ListProfessorByInternService";
 
 export default class ProfessorsController {
 
@@ -23,6 +24,18 @@ export default class ProfessorsController {
             const { id } = request.params;
             const showProfessors = new ShowProfessorService();
             const professor = await showProfessors.execute({ id });
+            return response.json(professor);
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+
+    public async showByIntern(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
+        try {
+            const { intern_id } = request.params;
+            const listProfessors = new ListProfessorByInternService();
+            const professor = await listProfessors.execute({ intern_id });
             return response.json(professor);
         }
         catch (err) {

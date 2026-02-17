@@ -15,5 +15,10 @@ export const ProfessorsRepository = AppDataSource.getRepository(Professor).exten
     async findByEmail(email: string): Promise<Professor | null> {
         const professor = this.findOne({ where: { email } });
         return professor;
+    },
+
+    async findByIntern(intern_id: string): Promise<Professor[] | null>{
+        const professor = this.find({where: {interns: {id : intern_id}}});
+        return professor;
     }
 })

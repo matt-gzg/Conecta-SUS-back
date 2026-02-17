@@ -9,6 +9,7 @@ ormconfig.json
 dist
 
 data-source.ts
+docker-compose.yml
 
 uploads/*
 !uploads/.gitkeep
