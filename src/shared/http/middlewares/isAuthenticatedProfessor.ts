@@ -9,7 +9,7 @@ interface ITokenPayload {
     sub: string;
 }
 
-export default function isAuthenticatedSecretary(request: Request, response: Response, next: NextFunction): void {
+export default function isAuthenticatedProfessor(request: Request, response: Response, next: NextFunction): void {
     const authHeader = request.headers.authorization;
     if (!authHeader) {
         throw new AppError('JWT token is missing', 401);
@@ -25,7 +25,7 @@ export default function isAuthenticatedSecretary(request: Request, response: Res
             request.user.role = role;
         }
 
-        if (request.user.role !== 'secretary' && request.user.role !== 'admin') {
+        if (request.user.role !== 'professor' && request.user.role !== 'admin') {
             throw new AppError('Insufficient permissions', 403);
         }
 

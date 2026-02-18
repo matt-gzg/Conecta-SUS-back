@@ -7,6 +7,7 @@ import DeleteRecordService from "../services/DeleteRecordService";
 import ListRecordByInternService from "../services/ListRecordByInternService";
 import ListRecordByPatientService from "../services/ListRecordByPatientService";
 import ShowRecordByAppointmentService from "../services/ShowRecordByAppointmentService";
+import ApproveRecordService from "../services/ApproveRecordService";
 
 export default class RecordsController {
 
@@ -35,7 +36,7 @@ export default class RecordsController {
 
     public async listByIntern(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
         try {
-            const { id } = request.params;
+            const { id } = request.user;
             const listRecords = new ListRecordByInternService();
             const records = await listRecords.execute({ id });
             return response.json(records);
@@ -87,6 +88,21 @@ export default class RecordsController {
             const { anamnesis, physicalExam, solicitedTests, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id } = request.body;
             const updateRecords = new UpdateRecordService();
             const record = await updateRecords.execute({ id, anamnesis, physicalExam, solicitedTests, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id });
+            return response.json(record);
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+
+    public async approve(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
+        try {
+            const { id } = request.params;
+            const { aproved } = request.body;
+
+            const approveRecord = new ApproveRecordService();
+            const record = await approveRecord.execute({ id, aproved });
+
             return response.json(record);
         }
         catch (err) {

@@ -2,21 +2,20 @@ import auth from "@config/auth";
 import AppError from "@shared/errors/AppError";
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
-import { AdminsRepository } from "@modules/admins/typeorm/repositories/AdminsRepository";
 
-interface ITokenPayload{
+interface ITokenPayload {
     iat: number;
     exp: number;
     sub: string;
 }
 
-export default async function isAuthenticatedAdmin(request: Request, response: Response, next: NextFunction) : Promise<void>{
+export default async function isAuthenticatedAdmin(request: Request, response: Response, next: NextFunction): Promise<void> {
     const authHeader = request.headers.authorization;
-    if(!authHeader){
+    if (!authHeader) {
         throw new AppError('JWT token is missing', 401);
     }
     const [type, token] = authHeader.split(' ');
-    try{
+    try {
         const decodedToken = verify(token, auth.jwt.secret) as ITokenPayload & { role?: string };
         const { sub, role } = decodedToken;
 
@@ -32,9 +31,9 @@ export default async function isAuthenticatedAdmin(request: Request, response: R
 
         return next();
     }
-    catch(err){
-        if(err instanceof AppError){
-            if(err.statusCode == 403){
+    catch (err) {
+        if (err instanceof AppError) {
+            if (err.statusCode == 403) {
                 throw err;
             }
         }
