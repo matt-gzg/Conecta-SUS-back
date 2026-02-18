@@ -3,7 +3,7 @@ import { RecordsRepository } from "../typeorm/repositories/RecordsRepository";
 
 export default class ListRecordService {
     public async execute(): Promise<Record[]> {
-        const records = await RecordsRepository.find();
+        const records = await RecordsRepository.findAll();
         return records;
     }
 }

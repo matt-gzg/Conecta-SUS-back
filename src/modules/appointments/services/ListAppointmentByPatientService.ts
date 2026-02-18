@@ -1,4 +1,3 @@
-
 import Appointment from "../typeorm/entities/Appointment";
 import { AppointmentsRepository } from "../typeorm/repositories/AppointmentsRepository";
 

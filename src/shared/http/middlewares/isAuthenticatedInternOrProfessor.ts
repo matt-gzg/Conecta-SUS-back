@@ -9,12 +9,15 @@ interface ITokenPayload {
     sub: string;
 }
 
-export default function isAuthenticatedSecretary(request: Request, response: Response, next: NextFunction): void {
+export default function isAuthenticatedInternOrProfessor(request: Request, response: Response, next: NextFunction): void {
     const authHeader = request.headers.authorization;
+
     if (!authHeader) {
-        throw new AppError('JWT token is missing', 401);
+        throw new AppError("JWT token is missing", 401);
     }
-    const [type, token] = authHeader.split(' ');
+
+    const [type, token] = authHeader.split(" ");
+
     try {
         const decodedToken = verify(token, auth.jwt.secret) as ITokenPayload & { role?: string };
         const { sub, role } = decodedToken;
@@ -25,13 +28,16 @@ export default function isAuthenticatedSecretary(request: Request, response: Res
             request.user.role = role;
         }
 
-        if (request.user.role !== 'secretary' && request.user.role !== 'admin') {
-            throw new AppError('Insufficient permissions', 403);
+        if (
+            request.user.role !== "intern" &&
+            request.user.role !== "professor" &&
+            request.user.role !== "admin"
+        ) {
+            throw new AppError("Insufficient permissions", 403);
         }
 
         return next();
-    }
-    catch (err) {
+    } catch (err) {
         if (err instanceof AppError) {
             if (err.statusCode == 403) {
                 throw err;

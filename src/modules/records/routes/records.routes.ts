@@ -2,12 +2,15 @@ import { Router } from "express";
 import RecordsController from "../controllers/RecordsController";
 import { celebrate, Joi, Segments } from "celebrate";
 import isAuthenticatedSecretary from "@shared/http/middlewares/isAuthenticatedSecretary";
+import isAuthenticatedIntern from "@shared/http/middlewares/isAuthenticatedIntern";
+import isAuthenticatedProfessor from "@shared/http/middlewares/isAuthenticatedProfessor";
+import isAuthenticatedInternOrProfessor from "@shared/http/middlewares/isAuthenticatedInternOrProfessor";
+import ensureCanAccessRecord from "@shared/http/middlewares/ensureCanAccessRecord";
 
 const recordsRouter = Router();
 const recordsController = new RecordsController();
-recordsRouter.use(isAuthenticatedSecretary);
 
-recordsRouter.get('/', async (req, res, next) => {
+recordsRouter.get('/', isAuthenticatedSecretary, async (req, res, next) => {
     try {
         await recordsController.index(req, res, next);
     }
@@ -19,6 +22,7 @@ recordsRouter.get('/', async (req, res, next) => {
 recordsRouter.get('/:id', celebrate({
     [Segments.PARAMS]: { id: Joi.string().uuid().required() }
 }),
+    isAuthenticatedInternOrProfessor, ensureCanAccessRecord,
     async (req, res, next) => {
         try {
             await recordsController.show(req, res, next);
@@ -31,6 +35,7 @@ recordsRouter.get('/:id', celebrate({
 recordsRouter.get('/patient/:id', celebrate({
     [Segments.PARAMS]: { id: Joi.string().uuid().required() }
 }),
+    isAuthenticatedSecretary,
     async (req, res, next) => {
         try {
             await recordsController.listByPatient(req, res, next);
@@ -40,9 +45,8 @@ recordsRouter.get('/patient/:id', celebrate({
         }
     });
 
-recordsRouter.get('/intern/:id', celebrate({
-    [Segments.PARAMS]: { id: Joi.string().uuid().required() }
-}),
+recordsRouter.get('/intern',
+    isAuthenticatedIntern,
     async (req, res, next) => {
         try {
             await recordsController.listByIntern(req, res, next);
@@ -55,6 +59,7 @@ recordsRouter.get('/intern/:id', celebrate({
 recordsRouter.get('/appointment/:id', celebrate({
     [Segments.PARAMS]: { id: Joi.string().uuid().required() }
 }),
+    isAuthenticatedSecretary,
     async (req, res, next) => {
         try {
             await recordsController.showByAppointment(req, res, next);
@@ -80,6 +85,7 @@ recordsRouter.post('/',
             appointment_id: Joi.string().uuid().required(),
         }
     }),
+    isAuthenticatedIntern,
     async (req, res, next) => {
         try {
             await recordsController.create(req, res, next);
@@ -106,6 +112,7 @@ recordsRouter.put('/:id',
             appointment_id: Joi.string().uuid().required(),
         }
     }),
+    isAuthenticatedInternOrProfessor, ensureCanAccessRecord,
     async (req, res, next) => {
         try {
             await recordsController.update(req, res, next);
@@ -117,9 +124,28 @@ recordsRouter.put('/:id',
 
 recordsRouter.delete('/:id',
     celebrate({ [Segments.PARAMS]: { id: Joi.string().uuid().required() } }),
+    isAuthenticatedInternOrProfessor, ensureCanAccessRecord,
     async (req, res, next) => {
         try {
             await recordsController.delete(req, res, next);
+        }
+        catch (err) {
+            next(err);
+        }
+    });
+
+
+recordsRouter.patch('/approve/:id',
+    celebrate({
+        [Segments.PARAMS]: { id: Joi.string().uuid().required() },
+        [Segments.BODY]: {
+            aproved: Joi.boolean().required(),
+        },
+    }),
+    isAuthenticatedProfessor, ensureCanAccessRecord,
+    async (req, res, next) => {
+        try {
+            await recordsController.approve(req, res, next);
         }
         catch (err) {
             next(err);

@@ -5,7 +5,7 @@ import CreateAppointmentService from "../services/CreateAppointmentService";
 import UpdateAppointmentService from "../services/UpdateAppointmentService";
 import DeleteAppointmentService from "../services/DeleteAppointmentService";
 import ListAppointmentByInternService from "../services/ListAppointmentByInternService";
-import ListAppointmentByPatientService from "../services/ListAppointmentByPatientService copy";
+import ListAppointmentByPatientService from "../services/ListAppointmentByPatientService";
 import ListAppointmentByDateService from "../services/ListAppointmentByDateService";
 
 

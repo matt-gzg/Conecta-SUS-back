@@ -2,12 +2,14 @@ import { Router } from "express";
 import { celebrate, Joi, Segments } from "celebrate";
 import AppointmentsController from "../controllers/AppointmentsController";
 import isAuthenticatedSecretary from "@shared/http/middlewares/isAuthenticatedSecretary";
+import isAuthenticatedSecretaryOrIntern from "@shared/http/middlewares/isAuthenticatedSecretaryOrIntern";
+import ensureCanAccessAppointment from "@shared/http/middlewares/ensureCanAccessAppointment";
 
 const appointmentsRouter = Router();
 const appointmentsController = new AppointmentsController();
-appointmentsRouter.use(isAuthenticatedSecretary);
 
-appointmentsRouter.get('/', async (req, res, next) => {
+
+appointmentsRouter.get('/', isAuthenticatedSecretary, async (req, res, next) => {
     try {
         await appointmentsController.index(req, res, next);
     }
@@ -18,7 +20,9 @@ appointmentsRouter.get('/', async (req, res, next) => {
 
 appointmentsRouter.get('/:id', celebrate({
     [Segments.PARAMS]: { id: Joi.string().uuid().required() }
-}),
+}), 
+    isAuthenticatedSecretaryOrIntern,
+    ensureCanAccessAppointment,
     async (req, res, next) => {
         try {
             await appointmentsController.show(req, res, next);
@@ -31,6 +35,7 @@ appointmentsRouter.get('/:id', celebrate({
 appointmentsRouter.get('/intern/:id', celebrate({
     [Segments.PARAMS]: { id: Joi.string().uuid().required() }
 }),
+    isAuthenticatedSecretaryOrIntern, ensureCanAccessAppointment,
     async (req, res, next) => {
         try {
             await appointmentsController.listByIntern(req, res, next);
@@ -43,6 +48,7 @@ appointmentsRouter.get('/intern/:id', celebrate({
 appointmentsRouter.get('/patient/:id', celebrate({
     [Segments.PARAMS]: { id: Joi.string().uuid().required() }
 }),
+    isAuthenticatedSecretaryOrIntern, ensureCanAccessAppointment,
     async (req, res, next) => {
         try {
             await appointmentsController.listByPatient(req, res, next);
@@ -55,6 +61,7 @@ appointmentsRouter.get('/patient/:id', celebrate({
 appointmentsRouter.get('/date/:date', celebrate({
     [Segments.PARAMS]: { date: Joi.string().isoDate().required() }
 }),
+    isAuthenticatedSecretaryOrIntern, ensureCanAccessAppointment,
     async (req, res, next) => {
         try {
             await appointmentsController.listByDate(req, res, next);
@@ -73,6 +80,7 @@ appointmentsRouter.post('/',
             patient_id: Joi.string().uuid().required(),
         }
     }),
+    isAuthenticatedSecretary,
     async (req, res, next) => {
         try {
             await appointmentsController.create(req, res, next);
@@ -92,6 +100,7 @@ appointmentsRouter.put('/:id',
             patient_id: Joi.string().uuid().required(),
         }
     }),
+    isAuthenticatedSecretary,
     async (req, res, next) => {
         try {
             await appointmentsController.update(req, res, next);
@@ -103,6 +112,7 @@ appointmentsRouter.put('/:id',
 
 appointmentsRouter.delete('/:id',
     celebrate({ [Segments.PARAMS]: { id: Joi.string().uuid().required() } }),
+    isAuthenticatedSecretary,
     async (req, res, next) => {
         try {
             await appointmentsController.delete(req, res, next);
