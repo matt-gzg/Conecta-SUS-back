@@ -5,6 +5,9 @@ import routes from './routes';
 import AppError from '@shared/errors/AppError';
 import '@shared/typeorm'
 import { errors } from 'celebrate';
+import https from 'https';
+import fs from 'fs';
+import path from 'path';
 
 const app = express();
 app.use(cors());
@@ -27,6 +30,13 @@ app.use((error: Error, request: Request, response: Response, next: NextFunction)
     });
 });
 
-app.listen(3333, () => {
-    console.log('Server started on port 3333!');
-})
+const httpsOptions = {
+  key: fs.readFileSync(path.resolve(__dirname, '..', 'certs', 'key.pem')),
+  cert: fs.readFileSync(path.resolve(__dirname, '..', 'certs', 'cert.pem')),
+};
+
+const port = 3333;
+
+https.createServer(httpsOptions, app).listen(port, () => {
+  console.log(`HTTPS server started on port ${port}!`);
+});
