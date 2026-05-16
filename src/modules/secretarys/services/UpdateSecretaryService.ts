@@ -11,7 +11,7 @@ interface IRequest {
     old_password?: string;
 }
 
-export default class CreateSecretaryService {
+export default class UpdateSecretaryService {
     public async execute({ id, name, email, password, old_password }: IRequest): Promise<Secretary> {
         const secretary = await SecretarysRepository.findById(id);
         if(!secretary){

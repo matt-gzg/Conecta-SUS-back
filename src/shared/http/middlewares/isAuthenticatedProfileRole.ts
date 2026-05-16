@@ -9,14 +9,14 @@ interface ITokenPayload {
     sub: string;
 }
 
-export default async function isAuthenticatedAdmin(request: Request, response: Response, next: NextFunction): Promise<void> {
+export default function isAuthenticatedProfileRole(request: Request, response: Response, next: NextFunction): void {
     const authHeader = request.headers.authorization;
     if (!authHeader) {
-        throw new AppError('JWT token is missing', 401);
+        throw new AppError("JWT token is missing", 401);
     }
-    const [type, token] = authHeader.split(' ');
-    if (!token || type.toLowerCase() !== 'bearer') {
-        throw new AppError('Invalid JWT token', 401);
+    const [type, token] = authHeader.split(" ");
+    if (!token || type.toLowerCase() !== "bearer") {
+        throw new AppError("Invalid JWT token", 401);
     }
     try {
         const decodedToken = verify(token, auth.jwt.secret) as ITokenPayload & { role?: string };
@@ -28,16 +28,19 @@ export default async function isAuthenticatedAdmin(request: Request, response: R
             request.user.role = role;
         }
 
-        if (request.user.role !== 'admin') {
-            throw new AppError('Insufficient permissions', 403);
+        if (
+            request.user.role !== "intern" &&
+            request.user.role !== "professor" &&
+            request.user.role !== "secretary"
+        ) {
+            throw new AppError("Insufficient permissions", 403);
         }
 
         return next();
-    }
-    catch (err) {
+    } catch (err) {
         if (err instanceof AppError) {
             throw err;
         }
-        throw new AppError('Invalid JWT token', 401);
+        throw new AppError("Invalid JWT token", 401);
     }
 }

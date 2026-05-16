@@ -17,6 +17,9 @@ export default function isAuthenticatedSecretaryOrIntern(request: Request, respo
     }
 
     const [type, token] = authHeader.split(" ");
+    if (!token || type.toLowerCase() !== "bearer") {
+        throw new AppError("Invalid JWT token", 401);
+    }
 
     try {
         const decodedToken = verify(token, auth.jwt.secret) as ITokenPayload & { role?: string };
@@ -39,12 +42,8 @@ export default function isAuthenticatedSecretaryOrIntern(request: Request, respo
         return next();
     } catch (err) {
         if (err instanceof AppError) {
-            if (err.statusCode == 403) {
-                throw err;
-            }
+            throw err;
         }
-        else {
-            throw new AppError('Invalid JWT token', 401);
-        }
+        throw new AppError('Invalid JWT token', 401);
     }
 }
