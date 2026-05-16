@@ -15,6 +15,9 @@ export default function isAuthenticatedIntern(request: Request, response: Respon
         throw new AppError('JWT token is missing', 401);
     }
     const [type, token] = authHeader.split(' ');
+    if (!token || type.toLowerCase() !== 'bearer') {
+        throw new AppError('Invalid JWT token', 401);
+    }
     try {
         const decodedToken = verify(token, auth.jwt.secret) as ITokenPayload & { role?: string };
         const { sub, role } = decodedToken;
@@ -33,12 +36,8 @@ export default function isAuthenticatedIntern(request: Request, response: Respon
     }
     catch (err) {
         if (err instanceof AppError) {
-            if (err.statusCode == 403) {
-                throw err;
-            }
+            throw err;
         }
-        else {
-            throw new AppError('Invalid JWT token', 401);
-        }
+        throw new AppError('Invalid JWT token', 401);
     }
 }

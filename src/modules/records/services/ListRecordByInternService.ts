@@ -7,7 +7,6 @@ interface IRequest {
 
 export default class ListRecordByInternService {
     public async execute({ id }: IRequest): Promise<Record[]> {
-        console.log('biava3')
         const records = await RecordsRepository.findByIntern(id);
         return records;
     }

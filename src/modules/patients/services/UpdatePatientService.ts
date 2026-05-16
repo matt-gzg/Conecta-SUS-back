@@ -20,7 +20,7 @@ interface IRequest {
     complement: string;
 }
 
-export default class CreatePatientService {
+export default class UpdatePatientService {
     public async execute({ id, name, cpf, susnumber, email, birth_date, phone, gender, cep, city, street, district, number, complement }: IRequest): Promise<Patient> {
         const patient = await PatientsRepository.findById(id);
         if (!patient) {
