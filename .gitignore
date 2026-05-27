@@ -7,8 +7,10 @@ temp/
 coverage
 ormconfig.json
 dist
+certs/
 
 data-source.ts
+docker-compose.yml
 
 uploads/*
 !uploads/.gitkeep

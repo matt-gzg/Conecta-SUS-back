@@ -1,0 +1,43 @@
+import auth from "@config/auth";
+import AppError from "@shared/errors/AppError";
+import { NextFunction, Request, Response } from "express";
+import { verify } from "jsonwebtoken";
+
+interface ITokenPayload {
+    iat: number;
+    exp: number;
+    sub: string;
+}
+
+export default function isAuthenticatedProfessor(request: Request, response: Response, next: NextFunction): void {
+    const authHeader = request.headers.authorization;
+    if (!authHeader) {
+        throw new AppError('JWT token is missing', 401);
+    }
+    const [type, token] = authHeader.split(' ');
+    if (!token || type.toLowerCase() !== 'bearer') {
+        throw new AppError('Invalid JWT token', 401);
+    }
+    try {
+        const decodedToken = verify(token, auth.jwt.secret) as ITokenPayload & { role?: string };
+        const { sub, role } = decodedToken;
+
+        request.user = { id: sub } as any;
+
+        if (role) {
+            request.user.role = role;
+        }
+
+        if (request.user.role !== 'professor' && request.user.role !== 'admin') {
+            throw new AppError('Insufficient permissions', 403);
+        }
+
+        return next();
+    }
+    catch (err) {
+        if (err instanceof AppError) {
+            throw err;
+        }
+        throw new AppError('Invalid JWT token', 401);
+    }
+}
