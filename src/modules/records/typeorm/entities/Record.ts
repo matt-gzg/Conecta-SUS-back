@@ -23,6 +23,8 @@ export default class Record {
     cid10: string
     @Column({ default: false, nullable: true })
     aproved: boolean;
+    @Column({ nullable: true })
+    document: string;
 
     @ManyToOne(() => Patient)
     @JoinColumn({ name: 'patient_id' })

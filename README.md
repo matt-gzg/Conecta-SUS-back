@@ -104,6 +104,11 @@ Observacao: varias rotas sao protegidas por middlewares de autenticacao/autorida
 - `DELETE /records/:id` (protegido: estagiario ou professor)
 - `PATCH /records/approve/:id` (protegido: professor)
 	- Body: `aproved`
+- `PATCH /records/:id/document` (protegido: estagiario ou professor)
+	- Form-data: `document` (arquivo)
+	- O arquivo e salvo localmente em `src/uploads` e o nome e persistido no campo `document` do record.
+- `GET /records/document/:filename` (protegido: estagiario ou professor)
+	- Retorna o arquivo do record pelo nome armazenado.
 
 ## Como executar
 

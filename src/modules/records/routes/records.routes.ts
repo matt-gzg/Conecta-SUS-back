@@ -6,9 +6,12 @@ import isAuthenticatedIntern from "@shared/http/middlewares/isAuthenticatedInter
 import isAuthenticatedProfessor from "@shared/http/middlewares/isAuthenticatedProfessor";
 import isAuthenticatedInternOrProfessor from "@shared/http/middlewares/isAuthenticatedInternOrProfessor";
 import ensureCanAccessRecord from "@shared/http/middlewares/ensureCanAccessRecord";
+import multer from "multer";
+import uploadConfig from "@config/upload";
 
 const recordsRouter = Router();
 const recordsController = new RecordsController();
+const upload = multer(uploadConfig);
 
 recordsRouter.get('/', isAuthenticatedSecretary, async (req, res, next) => {
     try {
@@ -18,6 +21,19 @@ recordsRouter.get('/', isAuthenticatedSecretary, async (req, res, next) => {
         next(err);
     }
 });
+
+recordsRouter.get('/document/:filename', celebrate({
+    [Segments.PARAMS]: { filename: Joi.string().required() }
+}),
+    isAuthenticatedInternOrProfessor,
+    async (req, res, next) => {
+        try {
+            await recordsController.getDocumentByName(req, res, next);
+        }
+        catch (err) {
+            next(err);
+        }
+    });
 
 recordsRouter.get('/:id', celebrate({
     [Segments.PARAMS]: { id: Joi.string().uuid().required() }
@@ -146,6 +162,21 @@ recordsRouter.patch('/approve/:id',
     async (req, res, next) => {
         try {
             await recordsController.approve(req, res, next);
+        }
+        catch (err) {
+            next(err);
+        }
+    });
+
+recordsRouter.patch('/:id/document',
+    celebrate({
+        [Segments.PARAMS]: { id: Joi.string().uuid().required() }
+    }),
+    isAuthenticatedInternOrProfessor, ensureCanAccessRecord,
+    upload.single('document'),
+    async (req, res, next) => {
+        try {
+            await recordsController.uploadDocument(req, res, next);
         }
         catch (err) {
             next(err);
