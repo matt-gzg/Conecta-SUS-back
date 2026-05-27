@@ -118,13 +118,17 @@ Observacao: varias rotas sao protegidas por middlewares de autenticacao/autorida
 npm install
 ```
 
-2) Crie o arquivo de data source do TypeORM (nao versionado no git).
+2) Configure o data source do TypeORM (arquivo nao versionado no git).
 
-Crie `src/shared/typeorm/data-source.ts` seguindo o modelo generico da documentacao oficial do TypeORM. Exemplo simplificado:
+Crie `src/shared/typeorm/data-source.ts`. O exemplo abaixo detecta se esta rodando em TS (dev) ou JS (build) e ajusta os caminhos de entidades e migrations automaticamente:
 
 ```ts
+import path from "path";
 import "reflect-metadata";
 import { DataSource } from "typeorm";
+
+const isCompiled = path.extname(__filename) === ".js";
+const extension = isCompiled ? "js" : "ts";
 
 export const AppDataSource = new DataSource({
 	type: "postgres",
@@ -133,8 +137,8 @@ export const AppDataSource = new DataSource({
 	username: "postgres",
 	password: "postgres",
 	database: "conecta_sus",
-	entities: ["src/modules/**/typeorm/entities/*.ts"],
-	migrations: ["src/shared/typeorm/migrations/*.ts"],
+	entities: [path.join(__dirname, "..", "..", "modules", "**", "typeorm", "entities", `*.${extension}`)],
+	migrations: [path.join(__dirname, "migrations", `*.${extension}`)],
 });
 ```
 
@@ -144,12 +148,30 @@ export const AppDataSource = new DataSource({
 npm run typeorm:run
 ```
 
-4) Inicie a API:
+4) Inicie a API em modo desenvolvimento:
 
 ```bash
 npm run dev
 ```
 
-### Observação
+## Build e start (producao)
 
-Para ser executado corretamente, é necessário possuir os certificados `cert.pem` e `key.pem` na pasta `src/shared/certs` devido à utilização de https
+1) Gere os arquivos JS:
+
+```bash
+npm run build
+```
+
+2) Inicie a API a partir do build:
+
+```bash
+npm start
+```
+
+### Observacao
+
+Para ser executado corretamente, e necessario possuir os certificados `cert.pem` e `key.pem` devido a utilizacao de https.
+
+- Dev (`npm run dev`): `src/shared/certs`
+- Build/start (`npm run build` + `npm start`): `dist/shared/certs`
+- Opcional: defina `CERTS_DIR` para apontar para outra pasta (ex.: ambiente de deploy)

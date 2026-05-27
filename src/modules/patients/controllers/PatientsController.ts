@@ -4,7 +4,7 @@ import ShowPatientService from "../services/ShowPatientService";
 import CreatePatientService from "../services/CreatePatientService";
 import UpdatePatientService from "../services/UpdatePatientService";
 import DeletePatientService from "../services/DeletePatientService";
-import ShowPatientByCPFService from "../services/ShowPatientByCpfService";
+import ShowPatientByCPFService from "../services/ShowPatientByCPFService";
 import ShowPatientBySUSNumberService from "../services/ShowPatientBySUSNumberService";
 import ListPatientsByNameService from "../services/ListPatientsByNameService";
 

@@ -32,9 +32,14 @@ app.use((error: Error, request: Request, response: Response, next: NextFunction)
     });
 });
 
+const projectRoot = process.cwd();
+const certsDir =
+  process.env.CERTS_DIR ??
+  path.resolve(projectRoot, 'dist', 'shared', 'certs');
+
 const httpsOptions = {
-  key: fs.readFileSync(path.resolve(__dirname, '..', 'certs', 'key.pem')),
-  cert: fs.readFileSync(path.resolve(__dirname, '..', 'certs', 'cert.pem')),
+  key: fs.readFileSync(path.resolve(certsDir, 'key.pem')),
+  cert: fs.readFileSync(path.resolve(certsDir, 'cert.pem')),
 };
 
 const port = 3333;
