@@ -8,6 +8,8 @@ import ListRecordByInternService from "../services/ListRecordByInternService";
 import ListRecordByPatientService from "../services/ListRecordByPatientService";
 import ShowRecordByAppointmentService from "../services/ShowRecordByAppointmentService";
 import ApproveRecordService from "../services/ApproveRecordService";
+import UpdateRecordDocumentService from "../services/UpdateRecordDocumentService";
+import ShowRecordDocumentService from "../services/ShowRecordDocumentService";
 
 export default class RecordsController {
 
@@ -104,6 +106,33 @@ export default class RecordsController {
             const record = await approveRecord.execute({ id, aproved });
 
             return response.json(record);
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+
+    public async uploadDocument(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
+        try {
+            const { id } = request.params;
+            const documentFilename = request.file?.filename;
+
+            const updateRecordDocument = new UpdateRecordDocumentService();
+            const record = await updateRecordDocument.execute({ id, documentFilename: documentFilename || '' });
+
+            return response.json(record);
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+
+    public async getDocumentByName(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
+        try {
+            const { filename } = request.params;
+            const showRecordDocument = new ShowRecordDocumentService();
+            const documentPath = await showRecordDocument.execute({ filename });
+            return response.sendFile(documentPath);
         }
         catch (err) {
             next(err);
