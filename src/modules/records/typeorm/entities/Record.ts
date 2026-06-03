@@ -25,6 +25,8 @@ export default class Record {
     aproved: boolean;
     @Column({ nullable: true })
     document: string;
+    @Column({ nullable: true })
+    professor_observation: string;
 
     @ManyToOne(() => Patient)
     @JoinColumn({ name: 'patient_id' })
