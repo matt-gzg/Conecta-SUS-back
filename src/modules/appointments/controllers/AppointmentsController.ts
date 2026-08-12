@@ -72,9 +72,9 @@ export default class AppointmentsController {
 
     public async create(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
         try {
-            const { date_time, status, intern_id, patient_id } = request.body;
+            const { date_time, status, intern_id, patient_id , professor_id} = request.body;
             const createAppointments = new CreateAppointmentService();
-            const appointment = await createAppointments.execute({ date_time, status, intern_id, patient_id });
+            const appointment = await createAppointments.execute({ date_time, status, intern_id, patient_id, professor_id });
             return response.json(appointment);
         }
         catch (err) {
@@ -85,9 +85,9 @@ export default class AppointmentsController {
     public async update(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
         try {
             const { id } = request.params;
-            const { date_time, status, intern_id, patient_id } = request.body;
+            const { date_time, status, intern_id, patient_id , professor_id} = request.body;
             const updateAppointments = new UpdateAppointmentService();
-            const appointment = await updateAppointments.execute({ id, date_time, status, intern_id, patient_id });
+            const appointment = await updateAppointments.execute({ id, date_time, status, intern_id, patient_id, professor_id });
             return response.json(appointment);
         }
         catch (err) {

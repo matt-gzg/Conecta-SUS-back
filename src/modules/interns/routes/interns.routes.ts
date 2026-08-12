@@ -2,12 +2,14 @@ import { Router } from "express";
 import { celebrate, Joi, Segments } from "celebrate";
 import InternsController from "../controllers/InternsController";
 import isAuthenticatedSecretary from "@shared/http/middlewares/isAuthenticatedSecretary";
+import isAuthenticated from "@shared/http/middlewares/isAuthenticatedProfileRole";
 
 const internsRouter = Router();
 const internsController = new InternsController();
-internsRouter.use(isAuthenticatedSecretary);
 
-internsRouter.get('/', async (req, res, next) => {
+internsRouter.use(isAuthenticated);
+
+internsRouter.get('/', isAuthenticatedSecretary, async (req, res, next) => {
     try {
         await internsController.index(req, res, next);
     }
