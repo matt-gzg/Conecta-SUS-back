@@ -2,6 +2,7 @@ import { AppDataSource } from "@shared/typeorm/data-source";
 import Record from "../entities/Record";
 
 export const RecordsRepository = AppDataSource.getRepository(Record).extend({
+    
     async findAll(): Promise<Record[]> {
         const records = await this.find({
             select: {
@@ -35,10 +36,9 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                 appointment: true,
                 intern: true,
                 patient: true,
+                appointment.professor: true                                                            
             },
         });
-
-        return records;
     },
 
     async findById(id: string): Promise<Record | null> {
@@ -73,10 +73,10 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
             relations: {
                 intern: true,
                 patient: true,
-                appointment: true
+                appointment: true,
+                appointment.professor: true                                                            
             }
         });
-        return record;
     },
 
     async findByIntern(intern_id: string): Promise<Record[]> {
@@ -107,9 +107,8 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                     date_time: true,
                     status: true,
                 },
-            }, relations: { intern: true, patient: true, appointment: true }
+            }, relations: { intern: true, patient: true, appointment: true, appointment.professor: true }
         });
-        return record;
     },
 
     async findByPatient(patient_id: string): Promise<Record[]> {
@@ -132,9 +131,8 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                     date_time: true,
                     status: true,
                 },
-            }, relations: { intern: true, patient: true, appointment: true }
+            }, relations: { intern: true, patient: true, appointment: true, appointment.professor: true }
         });
-        return record;
     },
 
     async findByAppointment(appointment_id: string): Promise<Record | null> {
@@ -156,8 +154,7 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                     date_time: true,
                     status: true,
                 },
-            }, relations: { intern: true, patient: true, appointment: true }
+            }, relations: { intern: true, patient: true, appointment: true, appointment.professor: true }
         });
-        return record;
     }
-})
+});

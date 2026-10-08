@@ -17,10 +17,15 @@ export const AppointmentsRepository = AppDataSource.getRepository(Appointment).e
                     id: true,
                     name: true,
                 },
+                professor: {
+                    id: true,
+                    name: true,
+                },
             },
             relations: {
                 intern: true,
                 patient: true,
+                professor: true,
             },
         });
         return appointments;
@@ -36,7 +41,7 @@ export const AppointmentsRepository = AppDataSource.getRepository(Appointment).e
                 intern: { id: true, name: true },
                 patient: { id: true, name: true },
             },
-            relations: { intern: true, patient: true },
+            relations: { intern: true, patient: true, professor: true },
         });
         return appointment;
     },
@@ -56,7 +61,11 @@ export const AppointmentsRepository = AppDataSource.getRepository(Appointment).e
                     id: true,
                     name: true,
                 },
-            }, relations: { intern: true, patient: true }
+                professor: {
+                    id: true,
+                    name: true,
+                }
+            }, relations: { intern: true, patient: true, professor: true }
         });
         return appointment;
     },
@@ -76,7 +85,11 @@ export const AppointmentsRepository = AppDataSource.getRepository(Appointment).e
                     id: true,
                     name: true,
                 },
-            }, relations: { intern: true, patient: true }
+                professor: {
+                    id: true,
+                    name: true,
+                }
+            }, relations: { intern: true, patient: true, professor: true }
         });
         return appointment;
     },
@@ -110,7 +123,11 @@ export const AppointmentsRepository = AppDataSource.getRepository(Appointment).e
                     id: true,
                     name: true,
                 },
-            }, relations: { intern: true, patient: true }
+                professor: {
+                    id: true,
+                    name: true,
+                }
+            }, relations: { intern: true, patient: true, professor: true }
         });
         return appointment;
     }
