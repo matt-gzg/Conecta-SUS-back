@@ -2,12 +2,12 @@ import { Router } from "express";
 import PatientsController from "../controllers/PatientsController";
 import { celebrate, Joi, Segments } from "celebrate";
 import isAuthenticatedSecretary from "@shared/http/middlewares/isAuthenticatedSecretary";
+import isAuthenticated from "@shared/http/middlewares/isAuthenticatedProfileRole";
 
 const patientsRouter = Router();
 const patientsController = new PatientsController();
-patientsRouter.use(isAuthenticatedSecretary);
 
-patientsRouter.get('/', async (req, res, next) => {
+patientsRouter.get('/', isAuthenticated, async (req, res, next) => {
     try {
         await patientsController.index(req, res, next);
     }
@@ -16,7 +16,7 @@ patientsRouter.get('/', async (req, res, next) => {
     }
 });
 
-patientsRouter.get('/:id', celebrate({
+patientsRouter.get('/:id', isAuthenticated, celebrate({
     [Segments.PARAMS]: { id: Joi.string().uuid().required() }
 }),
     async (req, res, next) => {
@@ -28,43 +28,43 @@ patientsRouter.get('/:id', celebrate({
         }
     });
 
-patientsRouter.get('/cpf/:cpf', celebrate({
+patientsRouter.get('/cpf/:cpf', isAuthenticated, celebrate({
     [Segments.PARAMS]: { cpf: Joi.string().required() }
 }),
     async (req, res, next) => {
         try {
-            await patientsController.show(req, res, next);
+            await patientsController.showByCPF(req, res, next);
         }
         catch (err) {
             next(err);
         }
     });
 
-patientsRouter.get('/susnumber/:susnumber', celebrate({
+patientsRouter.get('/susnumber/:susnumber', isAuthenticated, celebrate({
     [Segments.PARAMS]: { susnumber: Joi.string().required() }
 }),
     async (req, res, next) => {
         try {
-            await patientsController.show(req, res, next);
+            await patientsController.showBySUSNumber(req, res, next);
         }
         catch (err) {
             next(err);
         }
     });
 
-patientsRouter.get('/name/:name', celebrate({
+patientsRouter.get('/name/:name', isAuthenticated, celebrate({
     [Segments.PARAMS]: { name: Joi.string().required() }
 }),
     async (req, res, next) => {
         try {
-            await patientsController.show(req, res, next);
+            await patientsController.listByName(req, res, next);
         }
         catch (err) {
             next(err);
         }
     });
 
-patientsRouter.post('/',
+patientsRouter.post('/', isAuthenticatedSecretary,
     celebrate({
         [Segments.BODY]: {
             name: Joi.string().required(),
@@ -91,7 +91,7 @@ patientsRouter.post('/',
         }
     });
 
-patientsRouter.put('/:id',
+patientsRouter.put('/:id', isAuthenticatedSecretary,
     celebrate({
         [Segments.PARAMS]: { id: Joi.string().uuid().required() },
         [Segments.BODY]: {
@@ -119,7 +119,7 @@ patientsRouter.put('/:id',
         }
     });
 
-patientsRouter.delete('/:id',
+patientsRouter.delete('/:id', isAuthenticatedSecretary,
     celebrate({ [Segments.PARAMS]: { id: Joi.string().uuid().required() } }),
     async (req, res, next) => {
         try {
