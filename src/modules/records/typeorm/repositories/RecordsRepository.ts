@@ -6,6 +6,15 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
         const records = await this.find({
             select: {
                 id: true,
+                anamnesis: true,
+                physicalExam: true,
+                solicitedTests: true,
+                instructions: true,
+                prescription: true,
+                conduct: true,
+                cid10: true,
+                aproved: true,
+                document: true,
                 created_at: true,
                 updated_at: true,
                 intern: {
@@ -15,6 +24,11 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                 patient: {
                     id: true,
                     name: true,
+                },
+                appointment: {
+                    id: true,
+                    date_time: true,
+                    status: true,
                 },
             },
             relations: {
@@ -30,10 +44,30 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
     async findById(id: string): Promise<Record | null> {
         const record = this.findOne({
             where: { id }, select: {
+                id: true,
+                anamnesis: true,
+                physicalExam: true,
+                solicitedTests: true,
+                instructions: true,
+                prescription: true,
+                conduct: true,
+                cid10: true,
+                aproved: true,
+                document: true,
+                created_at: true,
+                updated_at: true,
                 intern: {
                     id: true,
                     name: true,
-                    email: true,
+                },
+                patient: {
+                    id: true,
+                    name: true,
+                },
+                appointment: {
+                    id: true,
+                    date_time: true,
+                    status: true,
                 },
             },
             relations: {
@@ -48,10 +82,30 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
     async findByIntern(intern_id: string): Promise<Record[]> {
         const record = this.find({
             where: { intern: { id: intern_id } }, select: {
+                id: true,
+                anamnesis: true,
+                physicalExam: true,
+                solicitedTests: true,
+                instructions: true,
+                prescription: true,
+                conduct: true,
+                cid10: true,
+                aproved: true,
+                document: true,
+                created_at: true,
+                updated_at: true,
                 intern: {
                     id: true,
                     name: true,
-                    email: true,
+                },
+                patient: {
+                    id: true,
+                    name: true,
+                },
+                appointment: {
+                    id: true,
+                    date_time: true,
+                    status: true,
                 },
             }, relations: { intern: true, patient: true, appointment: true }
         });
@@ -73,6 +127,11 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                     id: true,
                     name: true,
                 },
+                appointment: {
+                    id: true,
+                    date_time: true,
+                    status: true,
+                },
             }, relations: { intern: true, patient: true, appointment: true }
         });
         return record;
@@ -91,6 +150,11 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                 patient: {
                     id: true,
                     name: true,
+                },
+                appointment: {
+                    id: true,
+                    date_time: true,
+                    status: true,
                 },
             }, relations: { intern: true, patient: true, appointment: true }
         });
