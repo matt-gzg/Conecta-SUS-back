@@ -6,6 +6,9 @@ export const AppointmentsRepository = AppDataSource.getRepository(Appointment).e
     async findAll(): Promise<Appointment[]> {
         const appointments = await this.find({
             select: {
+                id: true,
+                date_time: true,
+                status: true,
                 intern: {
                     id: true,
                     name: true,
@@ -29,15 +32,27 @@ export const AppointmentsRepository = AppDataSource.getRepository(Appointment).e
     },
 
     async findById(id: string): Promise<Appointment | null> {
-        return this.findOne({
+        const appointment = await this.findOne({
             where: { id },
-            relations: ['intern', 'patient', 'professor'] 
+            select: {
+                id: true,
+                date_time: true,
+                status: true,
+                intern: { id: true, name: true },
+                patient: { id: true, name: true },
+            },
+            relations: { intern: true, patient: true, professor: true },
         });
+        return appointment;
     },
 
     async findByIntern(intern_id: string): Promise<Appointment[]> {
         const appointment = this.find({
-            where: { intern: { id: intern_id } }, select: {
+            where: { intern: { id: intern_id } },
+            select: {
+                id: true,
+                date_time: true,
+                status: true,
                 intern: {
                     id: true,
                     name: true,
@@ -57,7 +72,11 @@ export const AppointmentsRepository = AppDataSource.getRepository(Appointment).e
 
     async findByPatient(patient_id: string): Promise<Appointment[]> {
         const appointment = this.find({
-            where: { patient: { id: patient_id } }, select: {
+            where: { patient: { id: patient_id } },
+            select: {
+                id: true,
+                date_time: true,
+                status: true,
                 intern: {
                     id: true,
                     name: true,
@@ -91,7 +110,11 @@ export const AppointmentsRepository = AppDataSource.getRepository(Appointment).e
         ));
 
         const appointment = this.find({
-            where: { date_time: Between(startOfDay, endOfDay) }, select: {
+            where: { date_time: Between(startOfDay, endOfDay) },
+            select: {
+                id: true,
+                date_time: true,
+                status: true,
                 intern: {
                     id: true,
                     name: true,
