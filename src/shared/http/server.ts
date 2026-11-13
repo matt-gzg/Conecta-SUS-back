@@ -36,3 +36,21 @@ const port = 3333;
 app.listen(port, () => {
   console.log(`HTTP server started on port ${port}!`);
 });
+
+/*
+
+const projectRoot = process.cwd();
+const certsDir =
+  process.env.CERTS_DIR ??
+  path.resolve(projectRoot, 'dist', 'shared', 'certs');
+
+const httpsOptions = {
+  key: fs.readFileSync(path.resolve(certsDir, 'key.pem')),
+  cert: fs.readFileSync(path.resolve(certsDir, 'cert.pem')),
+};
+
+https.createServer(httpsOptions, app).listen(port, () => {
+  console.log(`HTTPS server started on port ${port}!`);
+});
+
+*/

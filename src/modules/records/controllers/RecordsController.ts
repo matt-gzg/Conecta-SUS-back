@@ -100,10 +100,10 @@ export default class RecordsController {
     public async approve(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
         try {
             const { id } = request.params;
-            const { aproved } = request.body;
+            const { aproved, observation } = request.body;
 
             const approveRecord = new ApproveRecordService();
-            const record = await approveRecord.execute({ id, aproved });
+            const record = await approveRecord.execute({ id, aproved, observation });
 
             return response.json(record);
         }
