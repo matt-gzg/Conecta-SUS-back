@@ -74,9 +74,9 @@ export default class RecordsController {
 
     public async create(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
         try {
-            const { anamnesis, physicalExam, solicitedTests, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id } = request.body;
+            const { anamnesis, physicalExam, solicitedExams, realizedExams, diagnosticHypothesis, returnDate, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id } = request.body;
             const createRecords = new CreateRecordService();
-            const record = await createRecords.execute({ anamnesis, physicalExam, solicitedTests, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id });
+            const record = await createRecords.execute({ anamnesis, physicalExam, solicitedExams, realizedExams, diagnosticHypothesis, returnDate, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id });
             return response.json(record);
         }
         catch (err) {
@@ -87,9 +87,9 @@ export default class RecordsController {
     public async update(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
         try {
             const { id } = request.params;
-            const { anamnesis, physicalExam, solicitedTests, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id } = request.body;
+            const { anamnesis, physicalExam, solicitedExams, realizedExams, diagnosticHypothesis, returnDate, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id } = request.body;
             const updateRecords = new UpdateRecordService();
-            const record = await updateRecords.execute({ id, anamnesis, physicalExam, solicitedTests, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id });
+            const record = await updateRecords.execute({ id, anamnesis, physicalExam, solicitedExams, realizedExams, diagnosticHypothesis, returnDate, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id });
             return response.json(record);
         }
         catch (err) {
