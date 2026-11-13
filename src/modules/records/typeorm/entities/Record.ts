@@ -7,16 +7,27 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, Prim
 export default class Record {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    @Column()
-    anamnesis: string;
+    @Column({ type: 'jsonb' })
+    anamnesis: {
+        qp: string;
+        hma: string;
+        hmp: string;
+        hmf: string;
+    };
     @Column()
     physicalExam: string;
     @Column()
-    solicitedTests: string
+    solicitedExams: string;
+    @Column()
+    realizedExams: string;
+    @Column()
+    diagnosticHypothesis: string;
+    @Column({ nullable: true })
+    returnDate: string | null;
     @Column()
     instructions: string;
     @Column()
-    prescription: string
+    prescription: string;
     @Column()
     conduct: string;
     @Column()

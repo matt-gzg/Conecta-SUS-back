@@ -98,9 +98,11 @@ Observacao: varias rotas sao protegidas por middlewares de autenticacao/autorida
 - `GET /records/intern` (protegido: estagiario)
 - `GET /records/appointment/:id` (protegido: secretaria)
 - `POST /records` (protegido: estagiario)
-	- Body: `anamnesis`, `physicalExam`, `solicitedTests`, `instructions`, `prescription`, `conduct`, `cid10`, `aproved?`, `intern_id`, `patient_id`, `appointment_id`
+	- Body: `anamnesis`, `physicalExam`, `solicitedExams`, `realizedExams?`, `diagnosticHypothesis?`, `returnDate?`, `instructions`, `prescription`, `conduct`, `cid10`, `aproved?`, `intern_id`, `patient_id`, `appointment_id`
+	- `anamnesis` é um objeto JSON estruturado: `{ "qp": "...", "hma": "...", "hmp": "...", "hmf": "..." }`, correspondendo a Queixa Principal, Historia Morbida Atual, Historia Morbida Pregressa e Historia Morbida Familiar.
 - `PUT /records/:id` (protegido: estagiario ou professor)
-	- Body: `anamnesis`, `physicalExam`, `solicitedTests`, `instructions`, `prescription`, `conduct`, `cid10`, `aproved?`, `intern_id`, `patient_id`, `appointment_id`
+	- Body: `anamnesis`, `physicalExam`, `solicitedExams`, `realizedExams?`, `diagnosticHypothesis?`, `returnDate?`, `instructions`, `prescription`, `conduct`, `cid10`, `aproved?`, `intern_id`, `patient_id`, `appointment_id`
+	- `returnDate` é um texto opcional da data de retorno do paciente.
 - `DELETE /records/:id` (protegido: estagiario ou professor)
 - `PATCH /records/approve/:id` (protegido: professor)
 	- Body: `aproved`

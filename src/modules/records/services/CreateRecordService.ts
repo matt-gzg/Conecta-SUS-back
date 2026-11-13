@@ -6,9 +6,17 @@ import { RecordsRepository } from "../typeorm/repositories/RecordsRepository";
 import { AppointmentsRepository } from "@modules/appointments/typeorm/repositories/AppointmentsRepository";
 
 interface IRequest {
-    anamnesis: string;
+    anamnesis: {
+        qp: string;
+        hma: string;
+        hmp: string;
+        hmf: string;
+    };
     physicalExam: string;
-    solicitedTests: string;
+    solicitedExams: string;
+    realizedExams: string;
+    diagnosticHypothesis: string;
+    returnDate: string | null;
     instructions: string;
     prescription: string;
     conduct: string;
@@ -19,7 +27,7 @@ interface IRequest {
 }
 
 export default class CreateRecordService {
-    public async execute({ anamnesis, physicalExam, solicitedTests, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id }: IRequest): Promise<Record> {
+    public async execute({ anamnesis, physicalExam, solicitedExams, realizedExams, diagnosticHypothesis, returnDate, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id }: IRequest): Promise<Record> {
         const intern = await InternsRepository.findById(intern_id);
         if (!intern) {
             throw new AppError('Intern not found');
@@ -37,7 +45,7 @@ export default class CreateRecordService {
             throw new AppError('Record already exists for this appointment');
         }
 
-        const record = RecordsRepository.create({anamnesis, physicalExam, solicitedTests, instructions, prescription, conduct, cid10, intern, patient, appointment });
+        const record = RecordsRepository.create({ anamnesis, physicalExam, solicitedExams, realizedExams, diagnosticHypothesis, returnDate, instructions, prescription, conduct, cid10, intern, patient, appointment });
         await RecordsRepository.save(record);
         return record;
     }

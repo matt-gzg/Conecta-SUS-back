@@ -7,9 +7,17 @@ import { AppointmentsRepository } from "@modules/appointments/typeorm/repositori
 
 interface IRequest {
     id: string;
-    anamnesis: string;
+    anamnesis: {
+        qp: string;
+        hma: string;
+        hmp: string;
+        hmf: string;
+    };
     physicalExam: string;
-    solicitedTests: string;
+    solicitedExams: string;
+    realizedExams: string;
+    diagnosticHypothesis: string;
+    returnDate: string | null;
     instructions: string;
     prescription: string;
     conduct: string;
@@ -20,7 +28,7 @@ interface IRequest {
 }
 
 export default class UpdateRecordService {
-    public async execute({ id, anamnesis, physicalExam, solicitedTests, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id }: IRequest): Promise<Record> {
+    public async execute({ id, anamnesis, physicalExam, solicitedExams, realizedExams, diagnosticHypothesis, returnDate, instructions, prescription, conduct, cid10, intern_id, patient_id, appointment_id }: IRequest): Promise<Record> {
         const record = await RecordsRepository.findById(id);
         if (!record) {
             throw new AppError('Record not found');
@@ -44,7 +52,10 @@ export default class UpdateRecordService {
 
         record.anamnesis = anamnesis;
         record.physicalExam = physicalExam;
-        record.solicitedTests = solicitedTests;
+        record.solicitedExams = solicitedExams;
+        record.realizedExams = realizedExams;
+        record.diagnosticHypothesis = diagnosticHypothesis;
+        record.returnDate = returnDate;
         record.instructions = instructions;
         record.prescription = prescription;
         record.conduct = conduct;
