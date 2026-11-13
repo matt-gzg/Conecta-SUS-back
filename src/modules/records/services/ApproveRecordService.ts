@@ -5,11 +5,11 @@ import { RecordsRepository } from "../typeorm/repositories/RecordsRepository";
 interface IRequest {
     id: string;
     aproved: boolean;
-    observacaoProfessor?: string;
+    observation?: string;
 }
 
 export default class ApproveRecordService {
-    public async execute({ id, aproved, observacaoProfessor }: IRequest): Promise<Record> {
+    public async execute({ id, aproved, observation }: IRequest): Promise<Record> {
         const record = await RecordsRepository.findById(id);
 
         if (!record) {
@@ -17,8 +17,8 @@ export default class ApproveRecordService {
         }
 
         record.aproved = aproved;
-        if (observacaoProfessor !== undefined){
-            record.professor_observation = observacaoProfessor;
+        if (observation !== undefined){
+            record.professor_observation = observation;
         }
 
         await RecordsRepository.save(record);

@@ -114,7 +114,7 @@ recordsRouter.patch('/approve/:id',
         [Segments.PARAMS]: { id: Joi.string().uuid().required() },
         [Segments.BODY]: {
             aproved: Joi.boolean().required(),
-            observacaoProfessor: Joi.string().allow('', null).optional(), 
+            observation: Joi.string().allow('', null).optional(), 
         },
     }),
     isAuthenticatedProfessor, ensureCanAccessRecord,

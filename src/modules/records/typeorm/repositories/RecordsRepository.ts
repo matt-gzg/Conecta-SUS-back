@@ -15,6 +15,7 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                 conduct: true,
                 cid10: true,
                 aproved: true,
+                professor_observation: true,
                 document: true,
                 created_at: true,
                 updated_at: true,
@@ -33,12 +34,14 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                 },
             },
             relations: {
-                appointment: true,
                 intern: true,
                 patient: true,
-                appointment.professor: true                                                            
+                appointment: {
+                    professor: true,
+                },                                                         
             },
         });
+        return records;
     },
 
     async findById(id: string): Promise<Record | null> {
@@ -53,6 +56,7 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                 conduct: true,
                 cid10: true,
                 aproved: true,
+                professor_observation: true,
                 document: true,
                 created_at: true,
                 updated_at: true,
@@ -73,10 +77,12 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
             relations: {
                 intern: true,
                 patient: true,
-                appointment: true,
-                appointment.professor: true                                                            
+                appointment: {
+                    professor: true,
+                },                                                            
             }
         });
+        return record;
     },
 
     async findByIntern(intern_id: string): Promise<Record[]> {
@@ -91,6 +97,7 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                 conduct: true,
                 cid10: true,
                 aproved: true,
+                professor_observation: true,
                 document: true,
                 created_at: true,
                 updated_at: true,
@@ -107,8 +114,10 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                     date_time: true,
                     status: true,
                 },
-            }, relations: { intern: true, patient: true, appointment: true, appointment.professor: true }
+            },
+            relations: { intern: true, patient: true, appointment: { professor: true } }
         });
+        return record;
     },
 
     async findByPatient(patient_id: string): Promise<Record[]> {
@@ -116,6 +125,7 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
             where: { patient: { id: patient_id } }, select: {
                 id: true,
                 aproved: true,
+                professor_observation: true,
                 created_at: true,
                 updated_at: true,
                 intern: {
@@ -131,8 +141,10 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                     date_time: true,
                     status: true,
                 },
-            }, relations: { intern: true, patient: true, appointment: true, appointment.professor: true }
+            },
+            relations: { intern: true, patient: true, appointment: { professor: true } }
         });
+        return record;
     },
 
     async findByAppointment(appointment_id: string): Promise<Record | null> {
@@ -154,7 +166,9 @@ export const RecordsRepository = AppDataSource.getRepository(Record).extend({
                     date_time: true,
                     status: true,
                 },
-            }, relations: { intern: true, patient: true, appointment: true, appointment.professor: true }
+            },
+            relations: { intern: true, patient: true, appointment: { professor: true } }
         });
+        return record;
     }
 });
